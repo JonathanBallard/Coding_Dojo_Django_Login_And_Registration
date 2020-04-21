@@ -22,7 +22,7 @@ def register(request):
 
     else:
         hashedPW = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
-        newUser = User.objects.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'], pw_hash = hashedPW)
+        newUser = User.objects.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'], pw_hash = hashedPW, date_of_birth=request.POST['dob'])
         request.session['cur_user'] = newUser.id
     return redirect('/welcome/')
 
@@ -40,8 +40,10 @@ def login(request):
 
 
 def welcome(request):
-
-    thisUser = User.objects.get(id = request.session['cur_user'])
+    if not 'cur_user' in request.session:
+        return redirect('/')
+    else:
+        thisUser = User.objects.get(id = request.session['cur_user'])
     context = {
         "user" : thisUser,
     }

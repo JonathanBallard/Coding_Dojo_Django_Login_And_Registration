@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models 
 import bcrypt
 import re 
+import datetime
  
 # create your models here 
 # Field Types Link: https://docs.djangoproject.com/en/1.11/ref/models/fields/#field-types 
@@ -26,6 +27,17 @@ class UserManager(models.Manager):
             errors['password_confirm'] = "Password does not match Confirm Password"
         if len(User.objects.filter(email=postData['email'])):
             errors['duplicate'] = "Email already exists"
+        if postData['dob'] > str(datetime.date.today()):
+            errors['dob'] = "Your birthday is set in the future... Are you a time traveller?"
+        
+        # Create a date object to compare with postData['dob']
+        today = datetime.datetime.now()
+        requiredAge = 13
+        age_requirement_date = "" + str(today.year - requiredAge) + "-" + str(today.month) + '-' + str(today.day)
+        if str(postData['too_young']) > age_requirement_date:
+            errors['too_young'] = "You must be at least " + str(requiredAge) + " years old to use this site"
+
+
 
         return errors
 
@@ -53,6 +65,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=45)
     email = models.CharField(max_length=255)
     pw_hash = models.CharField(max_length=255)
+    date_of_birth = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
