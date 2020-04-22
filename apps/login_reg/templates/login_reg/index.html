@@ -54,7 +54,6 @@
         $('#email_box').keyup(function(){
                 
                 $.post('/register/ajax/', $(this).serialize(), function(res){
-                    console.log('post fired')
                     $('#email_ajax').html(res);
                 });
                 return false;

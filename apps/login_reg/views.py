@@ -70,8 +70,6 @@ def reg_ajax(request):
         "emailExists" : emailExists,
     }
 
-    print('emailExists: ' + str(emailExists))
-
     return render(request, 'login_reg/partials/unique_email.html', context)
 
 
