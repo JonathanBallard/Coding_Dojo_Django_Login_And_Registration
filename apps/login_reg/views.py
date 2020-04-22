@@ -57,6 +57,34 @@ def destroy(request):
     return redirect('/')
 
 
+def reg_ajax(request):
+    # check email uniqueness
+
+    emailExists = False
+    allEmails = User.objects.filter(email=request.POST['email'])
+
+    if len(allEmails) > 0:
+        emailExists = True
+    
+    context = {
+        "emailExists" : emailExists,
+    }
+
+    print('emailExists: ' + str(emailExists))
+
+    return render(request, 'login_reg/partials/unique_email.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

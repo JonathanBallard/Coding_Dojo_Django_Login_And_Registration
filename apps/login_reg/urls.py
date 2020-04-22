@@ -7,5 +7,6 @@ urlpatterns = [
     path('login/', views.login), 
     path('welcome/', views.welcome), 
     path('destroy/', views.destroy), 
+    path('register/ajax/', views.reg_ajax), 
 
 ] 

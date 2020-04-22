@@ -22,6 +22,54 @@
 
     <script src="{% static 'js/script.js' %}"></script>
 
+
+    <!-- AJAX -->
+    <script>
+        $(document).ready(function(){
+
+        // get Cookie
+        function getCookie(c_name) {
+            if(document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=");
+                if(c_start != -1) {
+                    c_start = c_start + c_name.length + 1;
+                    c_end = document.cookie.indexOf(";", c_start);
+                    if(c_end == -1) c_end = document.cookie.length;
+                    return unescape(document.cookie.substring(c_start,c_end));
+                }
+            }
+                return "";
+            }
+
+            // Setup AJAX with csrf_token cookie
+            $(function () {
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken")
+                    }
+                });
+            });
+        
+        // on keyup check if email is duplicate and render partial template
+        $('#email_box').keyup(function(){
+                
+                $.post('/register/ajax/', $(this).serialize(), function(res){
+                    console.log('post fired')
+                    $('#email_ajax').html(res);
+                });
+                return false;
+            });
+
+        });
+    </script>
+
+
+
+
+
+
+
+
     <title>Login/Register</title>
 </head>
 <body>
@@ -33,7 +81,7 @@
 
         <div class="col-xl-7">
             <h2>Registration</h2>
-            <form action="/register/" method="POST">
+            <form action="/register/" method="POST" id="reg_form">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="first_name">First Name</label>
@@ -47,8 +95,10 @@
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input class="form-control" type="email" name="email">
+                    <input id="email_box" class="form-control" type="email" name="email">
                 </div>
+
+                <div id="email_ajax"></div>
 
                 <div class="form-group">
                     <label for="dob">Date of Birth</label>
@@ -82,7 +132,7 @@
 
         <div class="col-xl-4">
             <h2>Login</h2>
-            <form action="/login/" method="POST">
+            <form action="/login/" method="POST" id="login_form">
                 {% csrf_token %}
 
                 <div class="form-group">

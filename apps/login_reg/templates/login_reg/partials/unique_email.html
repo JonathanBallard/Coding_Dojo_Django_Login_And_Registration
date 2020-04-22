@@ -1,0 +1,13 @@
+
+{% if emailExists == True %}
+<div class="">
+    <h4 class="text-danger">Email address already in use</h4>
+</div>
+{% endif %}
+
+{% if emailExists == False %}
+<div class="">
+    <h4 class="text-success">Email address available!</h4>
+</div>
+{% endif %}
+

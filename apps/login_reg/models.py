@@ -34,7 +34,7 @@ class UserManager(models.Manager):
         today = datetime.datetime.now()
         requiredAge = 13
         age_requirement_date = "" + str(today.year - requiredAge) + "-" + str(today.month) + '-' + str(today.day)
-        if str(postData['too_young']) > age_requirement_date:
+        if str(postData['dob']) > age_requirement_date:
             errors['too_young'] = "You must be at least " + str(requiredAge) + " years old to use this site"
 
 
